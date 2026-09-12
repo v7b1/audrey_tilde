@@ -33,6 +33,7 @@ typedef struct _myObj {
     float   string_pitch, string_pitch_target;
     float   fb_gain, fb_gain_target;
     float   reverb_mix, reverb_mix_target;
+    float   hpf_, lpf_, hpf_target, lpf_target;
     float   echo_time, echo_scalar;
     short   pitch_connected;
 } t_myObj;
@@ -65,6 +66,8 @@ void *myObj_new(t_symbol *s, long argc, t_atom *argv)
     self->limiter[1].Init();
     
     self->string_pitch = self->string_pitch_target = 40.f;
+    self->hpf_ = self->hpf_target = 100.f;
+    self->lpf_ = self->lpf_target = 8000.f;
     self->fb_gain_target = -18.0f;
     self->reverb_mix_target = 0.1;
     
@@ -137,11 +140,12 @@ void myObj_fb_delay(t_myObj *self, double f) {
 void myObj_filter(t_myObj *self, double hp, double lp) {
     // --> log mapping...
     // initial: 250.0f, 10.0f, 4000.0f,
-    float hpf = fmap(hp, 10.0, 4000.0, Mapping::LOG);
-    self->engine->SetFeedbackHPFCutoff(hpf);
+    self->hpf_target = fmap(hp, 10.0, 4000.0, Mapping::LOG);
+//    self->engine->SetFeedbackHPFCutoff(hpf);
+    
     // initial: 18000.0f, min: 100.0f, max: 18000.0f,
-    float lpf = fmap(lp, 100.0, 18000.0, Mapping::LOG);
-    self->engine->SetFeedbackLPFCutoff(lpf);
+    self->lpf_target = fmap(lp, 100.0, 18000.0, Mapping::LOG);
+//    self->engine->SetFeedbackLPFCutoff(lpf);
     
 }
 
@@ -205,6 +209,11 @@ void myObj_perform64(t_myObj *self, t_object *dsp64, double **ins,
     float fb_gain_target = self->fb_gain_target;
     float reverb_mix = self->reverb_mix;
     float reverb_mix_target = self->reverb_mix_target;
+    float hpf = self->hpf_;
+    float hpf_target = self->hpf_target;
+    float lpf = self->lpf_;
+    float lpf_target = self->lpf_target;
+    
     
     
     for (size_t i=0; i<vs; i+=BLOCKSIZE)
@@ -219,6 +228,11 @@ void myObj_perform64(t_myObj *self, t_object *dsp64, double **ins,
         
         fonepole(fb_gain, fb_gain_target, interpol_coef);
         engine->SetFeedbackGain(fb_gain);
+        
+        fonepole(hpf, hpf_target, interpol_coef);
+        engine->SetFeedbackHPFCutoff(hpf);
+        fonepole(lpf, lpf_target, interpol_coef);
+        engine->SetFeedbackLPFCutoff(lpf);
         
         fonepole(reverb_mix, reverb_mix_target, interpol_coef * 0.2f);
         engine->SetReverbMix(reverb_mix);
@@ -242,6 +256,8 @@ void myObj_perform64(t_myObj *self, t_object *dsp64, double **ins,
     self->fb_gain = fb_gain;
     self->string_pitch = string_pitch;
     self->reverb_mix = reverb_mix;
+    self->hpf_ = hpf;
+    self->lpf_ = lpf;
 }
 
 
