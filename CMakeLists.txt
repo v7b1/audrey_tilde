@@ -1,32 +1,37 @@
 cmake_minimum_required(VERSION 3.19)
 
-project(audrey_tilde)
-
-if (APPLE)
-    if (NOT CMAKE_OSX_ARCHITECTURES)
-        set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE STRING "macOS architecture" FORCE)
-    endif()
+if(APPLE AND NOT DEFINED CMAKE_OSX_ARCHITECTURES)
+set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" 
+CACHE STRING "Build universal macOS binaries")
 endif()
 
+string(REGEX REPLACE "(.*)/" "" THIS_FOLDER_NAME "${CMAKE_CURRENT_SOURCE_DIR}")
+project(${THIS_FOLDER_NAME})
 
+option(EXPORT_COMPILE_COMMANDS "Export compile commands for LSP" ON)
+if (EXPORT_COMPILE_COMMANDS)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+endif ()
 
-# Fetch the correct verion of the max-api
-message(STATUS "Updating Git Submodules")
-execute_process(
-	COMMAND				git submodule update --init --recursive
-	WORKING_DIRECTORY	"${CMAKE_CURRENT_SOURCE_DIR}"
-)
-
-
-# Misc setup and subroutines
-include(${CMAKE_CURRENT_SOURCE_DIR}/source/max-sdk-base/script/max-package.cmake)
-
+MACRO(SUBDIRLIST result curdir)
+    FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+    SET(dirlist "")
+    FOREACH(child ${children})
+        IF(IS_DIRECTORY ${curdir}/${child})
+            LIST(APPEND dirlist ${child})
+        ENDIF()
+    ENDFOREACH()
+    SET(${result} ${dirlist})
+ENDMACRO()
 
 # Generate a project for every folder in the "source/projects" folder
+
 SUBDIRLIST(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/source/projects)
 foreach (project_dir ${PROJECT_DIRS})
-	if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/source/projects/${project_dir}/CMakeLists.txt")
-		message("Generating: ${project_dir}")
-		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/source/projects/${project_dir})
-	endif ()
+    set(project_path ${CMAKE_CURRENT_SOURCE_DIR}/source/projects/${project_dir})
+    # message("checking in: ${project_path}")
+    if (EXISTS "${project_path}/CMakeLists.txt")
+        # message("Generating: ${project_dir}")
+        add_subdirectory(${project_path})
+    endif ()
 endforeach ()
