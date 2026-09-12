@@ -1,0 +1,25 @@
+{
+    "name": "audrey_tilde",
+	"author" : "vboehm",
+	"description" : "An example Max package",
+	"homepatcher" : "",
+	"max_version_min" : "8.0", "max_version_max" : "none",
+	"name" : "audrey_tilde",
+	"os" : {
+		"macintosh" : {
+			"platform" : [ "x64", "arm64" ],
+			"min_version" : "none"
+		},
+		"windows" : {
+			"platform" : [ "x64" ],
+			"min_version" : "none"
+		}
+	},
+	"package_extra" : {
+		"reverse_domain" : "net.vboehm",
+		"copyright" : "Copyright (c) 2026 volker boehm"
+	},
+	"tags" : ["max", "example"],
+	"version" : "0.1.0",
+	"website" : "http://www.github.com/"
+}
