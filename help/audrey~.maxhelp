@@ -131,8 +131,8 @@
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 38.0, 20.0, 130.0, 43.0 ],
-                    "text": "audry~ "
+                    "patching_rect": [ 38.0, 20.0, 148.0, 43.0 ],
+                    "text": "audrey~ "
                 }
             },
             {
