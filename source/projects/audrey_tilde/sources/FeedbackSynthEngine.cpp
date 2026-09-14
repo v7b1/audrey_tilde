@@ -99,7 +99,7 @@ void Engine::SetDriveAmount(const float drive) {
     overdrive_[1].SetDrive(drive);
 }
 
-void Engine::Process(float in, float &outL, float &outR) {
+void Engine::Process(float in1, float in2, float &outL, float &outR) {
   // --- Update audio-rate-smoothed control params ---
 
   fonepole(fb_delay_samp_, fb_delay_samp_target_, fb_delay_smooth_coef_);
@@ -112,9 +112,9 @@ void Engine::Process(float in, float &outL, float &outR) {
   // ---> Feedback Loop
 
   // Get noise + feedback output
-  inL = fb_delayline_[0].Read(fb_delay_samp_) + noise_samp + in;
+  inL = fb_delayline_[0].Read(fb_delay_samp_) + noise_samp + in1;
   inR = fb_delayline_[1].Read(daisysp::fmax(1.0f, fb_delay_samp_ - 4.f)) +
-        noise_samp + in;
+        noise_samp + in2;
     
 
   // Process through KS resonator

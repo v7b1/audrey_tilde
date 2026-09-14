@@ -51,7 +51,7 @@ void myObj_free(t_myObj *self);
 void *myObj_new(t_symbol *s, long argc, t_atom *argv)
 {
     t_myObj* self = (t_myObj*)object_alloc(myObj_class);
-    dsp_setup((t_pxobject *)self, 2);
+    dsp_setup((t_pxobject *)self, 3);
     outlet_new((t_pxobject *)self, "signal");
     outlet_new((t_pxobject *)self, "signal");
 
@@ -101,6 +101,9 @@ void myObj_float(t_myObj *self, double n) {
             //
             break;
         case 1:
+            //
+            break;
+        case 2:
             self->string_pitch_target = DSY_CLAMP(n, -120., 120.0);
             break;
     }
@@ -113,6 +116,9 @@ void myObj_int(t_myObj *self, long n) {
             //
             break;
         case 1:
+            //
+            break;
+        case 2:
             self->string_pitch_target = DSY_CLAMP(n, -120., 120.0);
             break;
     }
@@ -122,10 +128,10 @@ void myObj_int(t_myObj *self, long n) {
 // feedback (body) controls
 void myObj_fb_gain(t_myObj *self, double f) {
     // initial value: -60.0f, min: -60.0f, max: 12.0f,
-    float gain = (f * 72.0) - 60.0; // expects 0..1,
-    gain = DSY_CLAMP(gain, -60., 12.);
+    float gain = (f * 84.0) - 72.0; // expects 0..1,
+    gain = DSY_CLAMP(gain, -72., 12.);
+    if (gain <= -72.0) gain = -120.0;
     self->fb_gain_target = gain;
-//    self->engine->SetFeedbackGain(gain);
 }
 
 void myObj_fb_delay(t_myObj *self, double f) {
@@ -197,8 +203,9 @@ void myObj_perform64(t_myObj *self, t_object *dsp64, double **ins,
                      long numins, double **outs, long numouts,
                      long sampleframes, long flags, void *userparam)
 {
-    t_double    *in1 = ins[0];          // audio input
-    t_double    *in2 = ins[1];          // string pitch
+    t_double    *in1 = ins[0];          // audio input left
+    t_double    *in2 = ins[1];          // audio input right
+    t_double    *in3 = ins[2];          // string pitch
     t_double    *out1 = outs[0];
     t_double    *out2 = outs[1];
 
@@ -224,7 +231,7 @@ void myObj_perform64(t_myObj *self, t_object *dsp64, double **ins,
     {
         // smooth params
         if (self->pitch_connected) {
-            string_pitch = in2[i];
+            string_pitch = in3[i];
         } else {
             fonepole(string_pitch, string_pitch_target, interpol_coef * 0.1f);
         }
@@ -246,7 +253,7 @@ void myObj_perform64(t_myObj *self, t_object *dsp64, double **ins,
         {
             uint8_t idx = i + k;
             float outL, outR;
-            engine->Process(in1[idx], outL, outR);
+            engine->Process(in1[idx], in2[idx], outL, outR);
             
             out1[idx] = (double)outL;
             out2[idx] = (double)outR;
@@ -268,7 +275,7 @@ void myObj_perform64(t_myObj *self, t_object *dsp64, double **ins,
 void myObj_dsp64(t_myObj *self, t_object *dsp64, short *count, double samplerate, long maxvectorsize, long flags)
 {
     self->sr = samplerate;
-    self->pitch_connected = count[1];
+    self->pitch_connected = count[2];
 
     if (maxvectorsize >= BLOCKSIZE)
         object_method(dsp64, gensym("dsp_add64"), self, myObj_perform64, 0, NULL);
@@ -290,9 +297,13 @@ void myObj_assist(t_myObj *self, void *b, long m, long a, char *s)
     if (m == ASSIST_INLET) {
         switch (a) {
             case 0:
-                std::strncpy(s,"(Signal) audio input", ASSIST_STRING_MAXSIZE);
+                std::strncpy(s,"(Signal) audio input left", ASSIST_STRING_MAXSIZE);
                 break;
             case 1:
+                std::strncpy(s,"(Signal) audio input right", ASSIST_STRING_MAXSIZE);
+                break;
+                
+            case 2:
                 std::strncpy(s,"(Signal/float) pitch", ASSIST_STRING_MAXSIZE);
                 break;
 
