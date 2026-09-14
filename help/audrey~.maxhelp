@@ -17,6 +17,29 @@
         "boxes": [
             {
                 "box": {
+                    "format": 6,
+                    "id": "obj-36",
+                    "maxclass": "flonum",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "bang" ],
+                    "parameter_enable": 0,
+                    "patching_rect": [ 476.0, 396.0, 50.0, 21.0 ]
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-34",
+                    "maxclass": "message",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [ "" ],
+                    "patching_rect": [ 470.0, 437.0, 50.0, 21.0 ],
+                    "text": "drive $1"
+                }
+            },
+            {
+                "box": {
                     "id": "obj-33",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -272,7 +295,7 @@
                     "patching_rect": [ 435.0, 164.0, 41.0, 48.0 ],
                     "saved_attribute_attributes": {
                         "valueof": {
-                            "parameter_initial": [ 0.75 ],
+                            "parameter_initial": [ 0.58 ],
                             "parameter_initial_enable": 1,
                             "parameter_longname": "live.dial[5]",
                             "parameter_mmax": 1.0,
@@ -1115,6 +1138,18 @@
                 "patchline": {
                     "destination": [ "obj-28", 0 ],
                     "source": [ "obj-32", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-1", 0 ],
+                    "source": [ "obj-34", 0 ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [ "obj-34", 0 ],
+                    "source": [ "obj-36", 0 ]
                 }
             },
             {

@@ -94,6 +94,11 @@ void Engine::SetReverbFeedback(const float time) { verb_.SetFeedback(time); }
 
 void Engine::SetOutputLevel(const float level) { output_level_ = level; }
 
+void Engine::SetDriveAmount(const float drive) {
+    overdrive_[0].SetDrive(drive);
+    overdrive_[1].SetDrive(drive);
+}
+
 void Engine::Process(float in, float &outL, float &outR) {
   // --- Update audio-rate-smoothed control params ---
 

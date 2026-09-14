@@ -164,6 +164,10 @@ void myObj_reverb(t_myObj *self, double mix, double decay) {
     self->engine->SetReverbFeedback(decayf);
 }
 
+void myObj_drive(t_myObj *self, double drive) {
+    float d = DSY_CLAMP(drive, 0.01, 0.999);
+    self->engine->SetDriveAmount(d);
+}
 
 
 // echo stuff
@@ -319,7 +323,7 @@ void ext_main(void *r)
     class_addmethod(c, (method)myObj_int, "int",  A_LONG, 0);
     class_addmethod(c, (method)myObj_fb_gain, "fb_gain",  A_FLOAT, 0);
     class_addmethod(c, (method)myObj_fb_delay, "delay",  A_FLOAT, 0);
-//    class_addmethod(c, (method)myObj_pitch, "pitch",  A_FLOAT, 0);
+    class_addmethod(c, (method)myObj_drive, "drive",  A_FLOAT, 0);
     class_addmethod(c, (method)myObj_filter, "filter",  A_FLOAT, A_FLOAT, 0);
     class_addmethod(c, (method)myObj_reverb, "reverb",  A_FLOAT, A_FLOAT, 0);
     class_addmethod(c, (method)myObj_echo, "echo",  A_FLOAT, A_FLOAT, A_FLOAT, 0);

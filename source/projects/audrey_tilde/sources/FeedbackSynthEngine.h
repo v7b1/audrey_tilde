@@ -40,6 +40,7 @@ class Engine {
         void SetReverbFeedback(const float time);
 
         void SetOutputLevel(const float level);
+        void SetDriveAmount(const float drive);
 
         void Process(float in, float &outL, float &outR);
 
