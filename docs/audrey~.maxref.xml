@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes'?>
+
+
+<c74object name='audrey~' category='MSP Operators, MSP Synthesis'>
+
+	<digest> a feedback synth engine </digest>
+    <description> <o>audrey~</o> is a feedback synth engine that incorporates Karplus-Strong synthesis, distortion/soft clipping, filters and reverb, connected by a feedback path and a tape delay effect. It is based on the original open source project Audrey II by Synthux Academy.
+    </description>
+
+
+	<!--METADATA-->
+
+	<metadatalist>
+		<metadata name='author'> Volker Böhm </metadata>
+		<metadata name='tag'> MSP </metadata>
+		<metadata name='tag'> MSP Synthesis </metadata>
+        <metadata name='tag'> Feedback </metadata>
+	</metadatalist>
+
+    
+    <!--INLETS-->
+    <inletlist>
+        <inlet id="0" type="matrix">
+            <digest>matrix: input to be delayed</digest>
+        </inlet>
+    </inletlist>
+    
+    <inletlist>
+        <inlet id="0" type="signal">
+            <digest>
+                Audio in left
+            </digest>
+            <description>
+                External audio input left
+            </description>
+        </inlet>
+        <inlet id="1" type="signal">
+            <digest>
+                Audio in right
+            </digest>
+            <description>
+                External audio input right
+            </description>
+        </inlet>
+        <inlet id="2" type="float">
+            <digest>
+                Sets pitch
+            </digest>
+            <description>
+                Sets pitch of the Karplus-Strong string
+            </description>
+        </inlet>
+    </inletlist>
+    
+    <!--OUTLETS-->
+    <outletlist>
+        <outlet id="0" type="signal">
+            <digest>
+                (signal) audio out left
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </outlet>
+        <outlet id="1" type="signal">
+            <digest>
+                (signal) audio out right
+            </digest>
+            <description>
+                TEXT_HERE
+            </description>
+        </outlet>
+    </outletlist>
+
+    
+    <!--ARGUMENTS-->
+
+    <objarglist>
+        <objarg name='pitch' optional="1" type="float">
+            <digest>Karplus-Strong pitch</digest>
+        </objarg>
+    </objarglist>
+
+	<!--MESSAGES-->
+
+	<methodlist>
+		<method name="float">
+			<arglist>
+				<arg name="ARG_NAME_0" type="float" optional="0" />
+			</arglist>
+
+			<digest>
+                in the third inlet: sets pitch
+			</digest>
+			
+			<description>
+                in the third inlet: sets pitch of the Karplus-Strong string
+			</description>
+		</method>
+        <method name="fb_gain">
+            <arglist>
+                <arg name="fb-gain" type="float" optional="0" />
+            </arglist>
+
+            <digest>
+                Overall feedback gain
+            </digest>
+            
+            <description>
+                Overall feedback gain of the resonator (body)
+            </description>
+        </method>
+        <method name="delay">
+            <arglist>
+                <arg name="delay" type="float" optional="0" />
+            </arglist>
+
+            <digest>
+                Overall delay
+            </digest>
+            
+            <description>
+                Overall delay of the resonator (body)
+            </description>
+        </method>
+        <method name="filter">
+            <arglist>
+                <arg name="highpass cutoff" type="float" optional="0" />
+                <arg name="lowpass cutoff" type="float" optional="0" />
+            </arglist>
+
+            <digest>
+                High- and lowpass cutoff frequencies
+            </digest>
+            
+            <description>
+                High- and lowpass cutoff frequencies (normalized to 0..1) of the EQ section.
+            </description>
+        </method>
+        <method name="reverb">
+            <arglist>
+                <arg name="dry/wet" type="float" optional="0" />
+                <arg name="decay" type="float" optional="0" />
+            </arglist>
+
+            <digest>
+                Reverb dry/wet amount and decay
+            </digest>
+            
+            <description>
+                Dry/wet amount and decay (normalized to 0..1) of the reverb section
+            </description>
+        </method>
+        <method name="echo">
+            <arglist>
+                <arg name="send amount" type="float" optional="0" />
+                <arg name="time" type="float" optional="0" />
+                <arg name="repeats" type="float" optional="0" />
+            </arglist>
+
+            <digest>
+                Tape echo send amount, echo time and repeats.
+            </digest>
+            
+            <description>
+                Send amount, echo time and reapts (normalized to 0..1) of the tape echo section. Maximum echo time is around 2.5 seconds, if 'double' is engaged it is 5 seconds long.
+            </description>
+        </method>
+        <method name="double">
+            <arglist>
+                <arg name="double flag" type="int" optional="0" />
+            </arglist>
+
+            <digest>
+                Double the Tape echo time
+            </digest>
+            
+            <description>
+                Flag (on/off) to double the tape echo time. Changes will introduce typical tape echo pitch sweeps.
+            </description>
+        </method>
+        <method name="drive">
+            <arglist>
+                <arg name="double flag" type="float" optional="0" />
+            </arglist>
+
+            <digest>
+                Sets drive amount (0..1)
+            </digest>
+            
+            <description>
+                Sets drive amount for the distortion/soft clipping stage.
+            </description>
+        </method>
+        
+        <method name="signal">
+            <arglist />
+            <digest>
+                Function depends on inlet
+            </digest>
+            <description>
+                In left inlet: External audio input (left)
+                <br />
+                <br />
+                In right inlet: External audio input (right)
+            </description>
+        </method>
+	</methodlist>
+
+
+	<!--ATTRIBUTES-->
+
+<!--	<attributelist>-->
+
+<!--		<attribute name='ATTRIBUTE' get='1' set='1' type='float64' size='1' >-->
+<!--			<digest></digest>-->
+<!--			<description></description>-->
+<!--		</attribute>-->
+
+<!--	</attributelist>-->
+
+
+	<!--RELATED-->
+
+	<seealsolist>
+		<seealso name="tapin~"/>
+        <seealso name="tapout~"/>
+        <seealso name="overdrive~"/>
+        <seealso name="biquad~"/>
+	</seealsolist>
+
+
+</c74object>

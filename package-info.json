@@ -1,10 +1,9 @@
 {
     "name": "audrey_tilde",
 	"author" : "vboehm",
-	"description" : "An example Max package",
+	"description" : "A feedback synth engine, based on Audrey II by Synthux Academy",
 	"homepatcher" : "",
 	"max_version_min" : "8.0", "max_version_max" : "none",
-	"name" : "audrey_tilde",
 	"os" : {
 		"macintosh" : {
 			"platform" : [ "x64", "arm64" ],
@@ -17,9 +16,9 @@
 	},
 	"package_extra" : {
 		"reverse_domain" : "net.vboehm",
-		"copyright" : "Copyright (c) 2026 volker boehm"
+		"copyright" : "Copyright (c) 2026 vboehm"
 	},
-	"tags" : ["max", "example"],
+	"tags" : ["msp", "feedback", "drone"],
 	"version" : "0.1.0",
-	"website" : "http://www.github.com/"
+	"website" : "http://vboehm.net/"
 }
