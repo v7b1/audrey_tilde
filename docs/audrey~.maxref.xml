@@ -176,7 +176,7 @@
         </method>
         <method name="drive">
             <arglist>
-                <arg name="double flag" type="float" optional="0" />
+                <arg name="drive" type="float" optional="0" />
             </arglist>
 
             <digest>
@@ -185,6 +185,45 @@
             
             <description>
                 Sets drive amount for the distortion/soft clipping stage.
+            </description>
+        </method>
+        <method name="decay">
+            <arglist>
+                <arg name="decay" type="float" optional="0" />
+            </arglist>
+
+            <digest>
+                Sets decay rate
+            </digest>
+            
+            <description>
+                Sets decay rate of the string models
+            </description>
+        </method>
+        <method name="damp">
+            <arglist>
+                <arg name="damping" type="float" optional="0" />
+            </arglist>
+
+            <digest>
+                Sets damping
+            </digest>
+            
+            <description>
+                Sets damping of high frequency content in the string models
+            </description>
+        </method>
+        <method name="detune">
+            <arglist>
+                <arg name="detune" type="float" optional="0" />
+            </arglist>
+
+            <digest>
+                Sets detune in semitones
+            </digest>
+            
+            <description>
+                Sets detune in semitones between left and right string model. For positive values, left goes down and right up and vice versa.
             </description>
         </method>
         

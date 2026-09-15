@@ -3,7 +3,7 @@ porting Audrey_II (feedback synth engine) by [Synthux Academy](https://www.synth
 
 Based on the original sources: https://github.com/Synthux-Academy/Audrey-II
 
-The Audrey_II module is itself based on [DaisySP](https://github.com/electro-smith/DaisySP) by [electro-smith](https://daisy.audio/).
+The Audrey_II project is itself based on [DaisySP](https://github.com/electro-smith/DaisySP) by [electro-smith](https://daisy.audio/).
 
 
 

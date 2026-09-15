@@ -46,9 +46,13 @@ void Engine::Init(const float sample_rate) {
 }
 
 void Engine::SetStringPitch(const float nn) {
-  const auto freq = mtof(nn);
-  strings_[0].SetFreq(freq);
-  strings_[1].SetFreq(freq);
+//  const auto freq = mtof(nn);
+//  strings_[0].SetFreq(freq);
+//  strings_[1].SetFreq(freq);
+    const auto freq1 = mtof(nn - detune_);
+    const auto freq2 = mtof(nn + detune_);
+    strings_[0].SetFreq(freq1);
+    strings_[1].SetFreq(freq2);
 }
 
 void Engine::SetFeedbackGain(const float gain_db) {
@@ -108,6 +112,10 @@ void Engine::SetDamping(const float damp) {
 void Engine::SetDecayRate(const float decay) {
     strings_[0].SetDecayRate(decay);
     strings_[1].SetDecayRate(decay);
+}
+
+void Engine::SetDetune(const float interv) {
+    detune_ = interv;
 }
 
 void Engine::Process(float in1, float in2, float &outL, float &outR) {

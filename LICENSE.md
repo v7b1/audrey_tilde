@@ -1,6 +1,7 @@
-MIT License
+###### MIT License
 
 Audrey_II source code, copyright (c) 2026 Synthux Academy.
+
 DaisySP, copyright (c) 2020 Electrosmith, Corp.
 
 Max object code + extensions, copyright (c) 2026 vboehm.

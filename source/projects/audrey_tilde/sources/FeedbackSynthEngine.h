@@ -46,6 +46,7 @@ class Engine {
 //        void SetBrightness(const float brightness);
         void SetDamping(const float damp);
         void SetDecayRate(const float decay);
+        void SetDetune(const float interv);
 
         void Process(float in1, float in2, float &outL, float &outR);
 
@@ -60,6 +61,7 @@ class Engine {
         float echo_send_ = 0.0f;
         float verb_mix_ = 0.0f;
         float output_level_ = 0.5f;
+        float detune_ = 0.f;        // vb
 
         float fb_delay_smooth_coef_;
         float fb_delay_samp_ = 1000.f;

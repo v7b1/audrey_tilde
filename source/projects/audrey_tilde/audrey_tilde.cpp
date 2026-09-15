@@ -138,10 +138,16 @@ void myObj_setDecay(t_myObj *self, double f) {
     self->engine->SetDecayRate(decay);
 }
 
+void myObj_setDetune(t_myObj *self, double d) {
+    self->engine->SetDetune( DSY_CLAMP(d, -6.0, 6.0) );
+    
+}
+
 // feedback (body) controls
 void myObj_fb_gain(t_myObj *self, double f) {
+    // expects 0..1
     // initial value: -60.0f, min: -60.0f, max: 12.0f,
-    float gain = (f * 84.0) - 72.0; // expects 0..1,
+    float gain = (f * 84.0) - 72.0;     // vb: make range a little larger
     gain = DSY_CLAMP(gain, -72., 12.);
     if (gain <= -72.0) gain = -120.0;
     self->fb_gain_target = gain;
@@ -152,7 +158,6 @@ void myObj_fb_delay(t_myObj *self, double f) {
     f *= 0.25f;         // expects 0..1, scales to 0..0.25
     self->engine->SetFeedbackDelay(f);
 }
-
 
 
 // filter stuff
@@ -347,6 +352,7 @@ void ext_main(void *r)
     class_addmethod(c, (method)myObj_drive, "drive",  A_FLOAT, 0);
     class_addmethod(c, (method)myObj_setDamping, "damp",  A_FLOAT, 0);
     class_addmethod(c, (method)myObj_setDecay, "decay",  A_FLOAT, 0);
+    class_addmethod(c, (method)myObj_setDetune, "detune",  A_FLOAT, 0);
     class_addmethod(c, (method)myObj_filter, "filter",  A_FLOAT, A_FLOAT, 0);
     class_addmethod(c, (method)myObj_reverb, "reverb",  A_FLOAT, A_FLOAT, 0);
     class_addmethod(c, (method)myObj_echo, "echo",  A_FLOAT, A_FLOAT, A_FLOAT, 0);
