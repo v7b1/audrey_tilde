@@ -125,6 +125,19 @@ void myObj_int(t_myObj *self, long n) {
 }
 
 
+void myObj_setDamping(t_myObj *self, double f) {
+    // set's damping of the strings
+    // expects 0..1
+    self->engine->SetDamping(f);
+}
+
+void myObj_setDecay(t_myObj *self, double f) {
+    // set's decay rate of the strings
+    // expects 0..1
+    float decay = f * 0.5 + 0.5;
+    self->engine->SetDecayRate(decay);
+}
+
 // feedback (body) controls
 void myObj_fb_gain(t_myObj *self, double f) {
     // initial value: -60.0f, min: -60.0f, max: 12.0f,
@@ -147,11 +160,9 @@ void myObj_filter(t_myObj *self, double hp, double lp) {
     // --> log mapping...
     // initial: 250.0f, 10.0f, 4000.0f,
     self->hpf_target = fmap(hp, 10.0, 4000.0, Mapping::LOG);
-//    self->engine->SetFeedbackHPFCutoff(hpf);
     
     // initial: 18000.0f, min: 100.0f, max: 18000.0f,
     self->lpf_target = fmap(lp, 100.0, 18000.0, Mapping::LOG);
-//    self->engine->SetFeedbackLPFCutoff(lpf);
     
 }
 
@@ -162,7 +173,6 @@ void myObj_reverb(t_myObj *self, double mix, double decay) {
     
     float mixf = DSY_CLAMP(mix, 0., 1.);
     self->reverb_mix_target = mixf * mixf;
-//    self->engine->SetReverbMix(mix);
     
     // initial: 0.2f, min: 0.2f, max: 1.0f,
     float decayf = infrasonic::ftension(decay, -3.0f);
@@ -297,14 +307,14 @@ void myObj_assist(t_myObj *self, void *b, long m, long a, char *s)
     if (m == ASSIST_INLET) {
         switch (a) {
             case 0:
-                std::strncpy(s,"(Signal) audio input left", ASSIST_STRING_MAXSIZE);
+                std::strncpy(s,"(signal) audio input left", ASSIST_STRING_MAXSIZE);
                 break;
             case 1:
-                std::strncpy(s,"(Signal) audio input right", ASSIST_STRING_MAXSIZE);
+                std::strncpy(s,"(signal) audio input right", ASSIST_STRING_MAXSIZE);
                 break;
                 
             case 2:
-                std::strncpy(s,"(Signal/float) pitch", ASSIST_STRING_MAXSIZE);
+                std::strncpy(s,"(signal/float) pitch", ASSIST_STRING_MAXSIZE);
                 break;
 
         }
@@ -312,10 +322,10 @@ void myObj_assist(t_myObj *self, void *b, long m, long a, char *s)
     else {
         switch (a) {
             case 0:
-                std::strncpy(s,"(Signal) outL", ASSIST_STRING_MAXSIZE);
+                std::strncpy(s,"(signal) outL", ASSIST_STRING_MAXSIZE);
                 break;
             case 1:
-                std::strncpy(s,"(Signal) outR", ASSIST_STRING_MAXSIZE);
+                std::strncpy(s,"(signal) outR", ASSIST_STRING_MAXSIZE);
                 break;
             
         }
@@ -335,6 +345,8 @@ void ext_main(void *r)
     class_addmethod(c, (method)myObj_fb_gain, "fb_gain",  A_FLOAT, 0);
     class_addmethod(c, (method)myObj_fb_delay, "delay",  A_FLOAT, 0);
     class_addmethod(c, (method)myObj_drive, "drive",  A_FLOAT, 0);
+    class_addmethod(c, (method)myObj_setDamping, "damp",  A_FLOAT, 0);
+    class_addmethod(c, (method)myObj_setDecay, "decay",  A_FLOAT, 0);
     class_addmethod(c, (method)myObj_filter, "filter",  A_FLOAT, A_FLOAT, 0);
     class_addmethod(c, (method)myObj_reverb, "reverb",  A_FLOAT, A_FLOAT, 0);
     class_addmethod(c, (method)myObj_echo, "echo",  A_FLOAT, A_FLOAT, A_FLOAT, 0);
@@ -345,5 +357,5 @@ void ext_main(void *r)
     myObj_class = c;
 
     
-    object_post(NULL, "audrey~ based on 'Audrey II' by Synthux Academy");
+    object_post(NULL, "audrey~ by vboehm, based on 'Audrey II' by Synthux Academy");
 }

@@ -49,6 +49,8 @@ class KarplusString
         \param damping Works 0-1.
     */
     void SetDamping(float damping);
+    
+    void SetDecayRate(float decay);     //vb
 
 
   private:
@@ -59,6 +61,7 @@ class KarplusString
     daisysp::DelayLine<float, kDelayLineSize>     string_;
 
     float frequency_, brightness_, damping_;
+    float decay_rate_;      // vb
 
     float sample_rate_;
 

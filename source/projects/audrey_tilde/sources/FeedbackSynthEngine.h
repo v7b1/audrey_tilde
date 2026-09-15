@@ -40,7 +40,12 @@ class Engine {
         void SetReverbFeedback(const float time);
 
         void SetOutputLevel(const float level);
+    
+        // vb: expose some more params
         void SetDriveAmount(const float drive);
+//        void SetBrightness(const float brightness);
+        void SetDamping(const float damp);
+        void SetDecayRate(const float decay);
 
         void Process(float in1, float in2, float &outL, float &outR);
 

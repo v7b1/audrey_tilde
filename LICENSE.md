@@ -1,9 +1,9 @@
 MIT License
 
-Audrey_II source code, copyright (c) 2026 Synthux Academy
+Audrey_II source code, copyright (c) 2026 Synthux Academy.
 DaisySP, copyright (c) 2020 Electrosmith, Corp.
 
-Max object code, Copyright (c) 2026 vboehm
+Max object code + extensions, copyright (c) 2026 vboehm.
 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

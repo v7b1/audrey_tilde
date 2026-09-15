@@ -15,9 +15,10 @@ void KarplusString::Init(float sample_rate)
     string_.Init();
     Reset();
 
-    SetFreq(440.f);
+//    SetFreq(440.f);
     SetDamping(.8f);
     SetBrightness(.5f);
+    SetDecayRate(0.8f);     // vb
 
     crossfade_.Init();
 }
@@ -52,7 +53,16 @@ void KarplusString::SetBrightness(float brightness)
 
 void KarplusString::SetDamping(float damping)
 {
-    damping_ = daisysp::fclamp(damping, 0.f, 1.f);
+//    damping_ = daisysp::fclamp(damping, 0.f, 1.f);
+    float m = daisysp::fclamp(damping, 0.f, 1.f);
+    float cutoff_hz = daisysp::mtof(m * 77.f + 57.f);   // range: 57..134 -> 220..18795Hz
+    iir_damping_filter_.SetFreq(cutoff_hz);
+}
+
+// vb
+void KarplusString::SetDecayRate(float decay)
+{
+    decay_rate_ = daisysp::fclamp(decay, 0.f, 1.f);
 }
 
 float KarplusString::ProcessInternal(const float in)
@@ -105,7 +115,8 @@ float KarplusString::ProcessInternal(const float in)
         s = daisysp::fclamp(s, -20.f, +20.f);
 
         s = dc_blocker_.Process(s);
-        s *= 0.8f;
+//        s *= 0.8f;
+        s *= decay_rate_;
 
         s = iir_damping_filter_.Process(s);
         string_.Write(s);

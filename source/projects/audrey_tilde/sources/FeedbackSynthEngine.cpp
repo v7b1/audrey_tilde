@@ -19,7 +19,7 @@ void Engine::Init(const float sample_rate) {
     strings_[i].Init(sample_rate);
     strings_[i].SetBrightness(0.98f);
     strings_[i].SetFreq(mtof(40.0f));
-    strings_[i].SetDamping(0.4f);
+    strings_[i].SetDamping(0.8f);       // vb
 
     fb_delayline_[i].Init();
       
@@ -97,6 +97,17 @@ void Engine::SetOutputLevel(const float level) { output_level_ = level; }
 void Engine::SetDriveAmount(const float drive) {
     overdrive_[0].SetDrive(drive);
     overdrive_[1].SetDrive(drive);
+}
+
+
+void Engine::SetDamping(const float damp) {
+    strings_[0].SetDamping(damp);
+    strings_[1].SetDamping(damp);
+}
+
+void Engine::SetDecayRate(const float decay) {
+    strings_[0].SetDecayRate(decay);
+    strings_[1].SetDecayRate(decay);
 }
 
 void Engine::Process(float in1, float in2, float &outL, float &outR) {
